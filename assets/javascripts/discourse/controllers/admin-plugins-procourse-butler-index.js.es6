@@ -1,7 +1,9 @@
+import ButlerPlugin from '../models/butler-plugin';
+
 export default Ember.Controller.extend({
   actions: {
     install() {
-      console.log('installing plugin');
+      ButlerPlugin.install(this.get('model').plugin_url);
     }
   }
 

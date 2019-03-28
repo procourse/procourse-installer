@@ -1,6 +1,6 @@
 export default Discourse.Route.extend({
   model() {
-    return;
+    return {"plugin_url": ""};
   },
 
   setupController(controller, model) {
