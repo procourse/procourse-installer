@@ -1,0 +1,14 @@
+<div class="procourse-butler">
+  <h2>ProCourse Butler Store</h2>
+  <div class="control-group">
+    <label class="control-label">{{i18n 'procourse_butler.plugin_url'}}</label>
+    <div class="controls">
+      {{input type="text" value=model.plugin_url class="input-xxlarge" id='plugin-url'}}
+    </div>
+  </div>
+  {{#d-button action=(action "install") disabled=model.isInstalling class="btn btn-primary install-plugin"}}{{i18n 'procourse_butler.install'}}{{/d-button}}
+
+  {{#if installing}}
+    <span class='installed-plugin'>{{i18n 'procourse_butler.installed'}}</span>
+  {{/if}}
+</div>
