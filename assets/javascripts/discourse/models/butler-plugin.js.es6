@@ -6,9 +6,9 @@ export default {
 
   findById() {
   },
-  install(path){
+  install(plugin_url){
     return ajax(`/butler-store/install`, {
-      data: JSON.stringify({"plugin_path": path}),
+      data: JSON.stringify({"plugin_url": plugin_url}),
       type: 'POST',
       dataType: 'json',
       contentType: 'application/json'
