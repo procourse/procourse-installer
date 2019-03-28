@@ -3,5 +3,6 @@
 # version: 0.1
 # authors: ProCourse
 # url: https://github.com/procourse/procourse-butler
-#
-#
+
+
+register_asset 'stylesheets/procourse-butler.scss'
