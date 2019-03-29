@@ -14,3 +14,7 @@ Discourse::Application.routes.append do
 end
 
 load File.expand_path('../lib/procourse_butler_store/engine.rb', __FILE__)
+
+after_initialize do
+  require_dependency File.expand_path('../app/jobs/regular/butler_store_upgrade_plugin.rb', __FILE__)
+end

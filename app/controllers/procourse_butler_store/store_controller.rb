@@ -8,17 +8,16 @@ module ProcourseButlerStore
         else
           plugin_url = params[:plugin_url] + ".git"
         end
-        
+
         `cd /var/www/discourse/plugins && git clone #{plugin_url}`
-        
+
         dir = plugin_url.match(/([^\/]+)\/?$/)[0][0..-5]
 
-        repo = DockerManager::GitRepo.new('/var/www/discourse/plugins/' + dir)
-        repo.stop_upgrading
+        Jobs.enqueue(
+          :butler_store_upgrade_plugin,
+          dir: dir
+        )
 
-        upgrader = DockerManager::Upgrader.new(-1,repo,nil)
-        upgrader.upgrade
-        
         render json: success_json
       else
 
