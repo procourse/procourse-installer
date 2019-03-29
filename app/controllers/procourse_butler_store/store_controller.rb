@@ -3,7 +3,19 @@ module ProcourseButlerStore
 
     def install
       if params[:plugin_url]
-        `cd /var/www/discourse/plugins && git clone #{params[:plugin_url]}.git`
+        if params[:plugin_url].end_with? ".git"
+          plugin_url = params[:plugin_url]
+        else
+          plugin_url = params[:plugin_url] + ".git"
+        end
+        
+        `cd /var/www/discourse/plugins && git clone #{plugin_url}`
+        
+        dir = plugin_url.match(/([^\/]+)\/?$/)[0][0..-5]
+
+        repo = DockerManager::GitRepo.find('/var/www/discourse/plugins/' + dir)
+        DockerManager::Upgrader.new(-1,repo,nil).upgrade
+        
         render json: success_json
       else
 
