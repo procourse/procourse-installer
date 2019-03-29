@@ -15,7 +15,8 @@ module ProcourseButlerStore
 
         Jobs.enqueue(
           :butler_store_upgrade_plugin,
-          dir: dir
+          dir: dir,
+          user_id: current_user.id
         )
 
         render json: success_json
