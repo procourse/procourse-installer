@@ -4,6 +4,7 @@ export default Ember.Controller.extend({
   actions: {
     install() {
       ButlerPlugin.install(this.get('model').plugin_url);
+      window.location.href = `/admin/upgrade`;
     }
   }
 
