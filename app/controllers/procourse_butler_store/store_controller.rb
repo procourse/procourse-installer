@@ -14,7 +14,8 @@ module ProcourseButlerStore
         dir = plugin_url.match(/([^\/]+)\/?$/)[0][0..-5]
 
         repo = DockerManager::GitRepo.find('/var/www/discourse/plugins/' + dir)
-        DockerManager::Upgrader.new(-1,repo,nil).upgrade
+        upgrader = DockerManager::Upgrader.new(-1,repo,nil)
+        upgrader.upgrade
         
         render json: success_json
       else
