@@ -13,7 +13,7 @@ module ProcourseButlerStore
         
         dir = plugin_url.match(/([^\/]+)\/?$/)[0][0..-5]
 
-        repo = DockerManager::GitRepo.find('/var/www/discourse/plugins/' + dir)
+        repo = DockerManager::GitRepo.new('/var/www/discourse/plugins/' + dir)
         repo.stop_upgrading
 
         upgrader = DockerManager::Upgrader.new(-1,repo,nil)
