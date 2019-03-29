@@ -2,27 +2,31 @@ module ProcourseButlerStore
   class StoreController < ApplicationController
 
     def install
-      if params[:plugin_url]
-        if params[:plugin_url].end_with? ".git"
-          plugin_url = params[:plugin_url]
-        else
-          plugin_url = params[:plugin_url] + ".git"
-        end
+      raise Discourse::NotFound unless params[:plugin_url].present?
 
-        `cd /var/www/discourse/plugins && git clone #{plugin_url}`
-
-        dir = plugin_url.match(/([^\/]+)\/?$/)[0][0..-5]
-
-        Jobs.enqueue(
-          :butler_store_upgrade_plugin,
-          dir: dir,
-          user_id: current_user.id
-        )
-
-        render json: success_json
+      if params[:plugin_url].end_with? ".git"
+        plugin_url = params[:plugin_url]
       else
-
+        plugin_url = params[:plugin_url] + ".git"
       end
+
+      `cd /var/www/discourse/plugins && git clone #{plugin_url}`
+
+      dir = plugin_url.match(/([^\/]+)\/?$/)[0][0..-5]
+      repo = DockerManager::GitRepo.new('/var/www/discourse/plugins/' + dir, dir)
+      repo.stop_upgrading
+      upgrader = DockerManager::Upgrader.new(current_user.id,repo,nil)
+
+      pid = fork do
+        exit if fork
+        Process.setsid
+        exit if fork
+        upgrader.upgrade
+      end
+
+      Process.waitpid(pid)
+
+      render plain: "OK"
     end
 
   end
