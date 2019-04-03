@@ -7,6 +7,7 @@
     </div>
   </div>
   {{#d-button action=(action "install") disabled=model.isInstalling class="btn btn-primary install-plugin"}}{{i18n 'procourse_butler.install'}}{{/d-button}}
+  {{x-console output=output followOutput=true}}
 
   {{#if installing}}
     <span class='installed-plugin'>{{i18n 'procourse_butler.installed'}}</span>

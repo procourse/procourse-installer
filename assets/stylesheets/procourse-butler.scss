@@ -1,3 +1,13 @@
 .procourse-butler {
 
 }
+div.logs {
+  margin-top: 20px;
+  overflow-x: scroll;
+  height: 400px;
+  white-space: pre;
+  font-family: monospace;
+  background-color: black;
+  color: #ddd;
+  padding: 10px;
+}
