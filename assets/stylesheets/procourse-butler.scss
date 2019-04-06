@@ -1,13 +1,24 @@
 .procourse-butler {
+  .progress {
+    width: 100%;
+    progress {
+      width: 100%;
+    }
+  }
+  div.logs {
+    margin-top: 20px;
+    overflow-x: scroll;
+    height: 400px;
+    white-space: pre;
+    font-family: monospace;
+    background-color: black;
+    color: #ddd;
+    padding: 10px;
+  }
+  .installed-plugin {
+    display: block;
+    font-weight: bold;
+    margin-top: 10px;
+  }
 
-}
-div.logs {
-  margin-top: 20px;
-  overflow-x: scroll;
-  height: 400px;
-  white-space: pre;
-  font-family: monospace;
-  background-color: black;
-  color: #ddd;
-  padding: 10px;
 }
