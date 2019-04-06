@@ -41,6 +41,8 @@ export default Ember.Controller.extend({
   actions: {
     install() {
       this.set("installing", true);
+      this.set("output", "");
+      this.set("installed", false);
       this.startBus();
       ButlerPlugin.install(this.get('model').plugin_url);
     }
