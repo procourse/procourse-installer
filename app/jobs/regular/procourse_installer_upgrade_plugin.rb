@@ -1,5 +1,5 @@
 module Jobs
-  class ButlerStoreUpgradePlugin < Jobs::Base
+  class ProcourseInstallerUpgradePlugin < Jobs::Base
     def execute(args)
       repo = DockerManager::GitRepo.new('/var/www/discourse/plugins/' + args[:dir], args[:dir])
       repo.stop_upgrading

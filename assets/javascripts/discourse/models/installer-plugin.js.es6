@@ -7,7 +7,7 @@ export default {
   findById() {
   },
   install(plugin_url){
-    return ajax(`/butler-store/install`, {
+    return ajax(`/procourse-installer/install`, {
       data: JSON.stringify({"plugin_url": plugin_url}),
       type: 'POST',
       dataType: 'json',

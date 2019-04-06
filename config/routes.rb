@@ -1,3 +1,3 @@
-ProcourseButlerStore::Engine.routes.draw do
-  post '/install' => 'store#install'
+ProcourseInstaller::Engine.routes.draw do
+  post '/install' => 'install#install'
 end

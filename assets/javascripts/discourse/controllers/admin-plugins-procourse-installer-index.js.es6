@@ -1,4 +1,4 @@
-import ButlerPlugin from '../models/butler-plugin';
+import InstallerPlugin from '../models/installer-plugin';
 
 export default Ember.Controller.extend({
   output: null,
@@ -44,7 +44,7 @@ export default Ember.Controller.extend({
       this.set("output", "");
       this.set("installed", false);
       this.startBus();
-      ButlerPlugin.install(this.get('model').plugin_url);
+      InstallerPlugin.install(this.get('model').plugin_url);
     }
   }
 

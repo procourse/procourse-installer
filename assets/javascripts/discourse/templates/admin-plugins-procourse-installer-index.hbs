@@ -1,0 +1,19 @@
+<div class="procourse-installer">
+  <h2>ProCourse Installer</h2>
+  <div class="control-group">
+    <label class="control-label">{{i18n 'procourse_installer.plugin_url'}}</label>
+    <div class="controls">
+      {{input type="text" value=model.plugin_url class="input-xxlarge" id='plugin-url'}}
+    </div>
+  </div>
+  {{#d-button action=(action "install") disabled=installing class="btn btn-primary install-plugin"}}{{i18n 'procourse_installer.install'}}{{/d-button}}
+
+  {{#if installing}}
+    <h3>Installing Plugin</h3>
+    {{progress-bar percent=percent}}
+    {{x-console output=output followOutput=true}}
+  {{/if}}
+  {{#if installed}}
+    <span class='installed-plugin'>{{i18n 'procourse_installer.installed'}}</span>
+  {{/if}}
+</div>

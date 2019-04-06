@@ -1,5 +1,5 @@
-module ProcourseButlerStore
-  class StoreController < ApplicationController
+module ProcourseInstaller
+  class InstallController < ApplicationController
 
     def install
       raise Discourse::NotFound unless params[:plugin_url].present?
