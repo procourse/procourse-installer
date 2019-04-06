@@ -2,6 +2,7 @@ import ButlerPlugin from '../models/butler-plugin';
 
 export default Ember.Controller.extend({
   output: null,
+  percent: "0",
   messageReceived(msg) {
     switch (msg.type) {
       case "log":
@@ -14,15 +15,14 @@ export default Ember.Controller.extend({
         this.set("status", msg.value);
 
         if (msg.value === "complete") {
-          this.get("model")
-            .filter(repo => repo.get("upgrading"))
-            .forEach(repo => {
-              repo.set("version", repo.get("latest.version"));
-            });
+          this.set("installed", true);
+          this.set("installing", false);
         }
 
         if (msg.value === "complete" || msg.value === "failed") {
           this.updateAttribute("upgrading", false);
+          this.set("installing", false);
+          this.stopBus();
         }
 
         break;
@@ -40,6 +40,7 @@ export default Ember.Controller.extend({
   },
   actions: {
     install() {
+      this.set("installing", true);
       this.startBus();
       ButlerPlugin.install(this.get('model').plugin_url);
     }

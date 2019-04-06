@@ -6,10 +6,14 @@
       {{input type="text" value=model.plugin_url class="input-xxlarge" id='plugin-url'}}
     </div>
   </div>
-  {{#d-button action=(action "install") disabled=model.isInstalling class="btn btn-primary install-plugin"}}{{i18n 'procourse_butler.install'}}{{/d-button}}
-  {{x-console output=output followOutput=true}}
+  {{#d-button action=(action "install") disabled=installing class="btn btn-primary install-plugin"}}{{i18n 'procourse_butler.install'}}{{/d-button}}
 
   {{#if installing}}
+    <h3>Installing Plugin</h3>
+    {{progress-bar percent=percent}}
+    {{x-console output=output followOutput=true}}
+  {{/if}}
+  {{#if installed}}
     <span class='installed-plugin'>{{i18n 'procourse_butler.installed'}}</span>
   {{/if}}
 </div>
