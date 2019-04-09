@@ -1,7 +1,6 @@
 namespace 'db' do
   task 'preinstall' do
-    plugins = File.readlines('/shared/procourse-installer/plugins.txt') if File.exist?('/shared/procourse-installer/plugins.txt')
-    puts plugins
+    plugins = File.readlines('/shared/tmp/procourse-installer/plugins.txt') if File.exist?('/shared/tmp/procourse-installer/plugins.txt')
     unless plugins.nil?
       plugins.each do |plugin| 
         begin

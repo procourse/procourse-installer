@@ -26,10 +26,8 @@ module ProcourseInstaller
 
       Process.waitpid(pid)
 
-      unless File.directory?('/shared/procourse-installer')
-        `mkdir /shared/procourse-installer`
-      end
-      plugin_file = File.new('/shared/procourse-installer/plugins.txt', 'a')
+      `mkdir /shared/tmp/procourse-installer` unless Dir.exist?('/shared/tmp/procourse-installer')
+      plugin_file = File.new('/shared/tmp/procourse-installer/plugins.txt', 'a')
       plugin_file.write("#{plugin_url}\n")
       plugin_file.close
 
