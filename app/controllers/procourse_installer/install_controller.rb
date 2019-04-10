@@ -3,7 +3,7 @@ module ProcourseInstaller
     def show
       plugins = ProcourseInstaller::InstalledPlugins.get
 
-      plugins.map { |plugin| plugin.attributes.exclude('url') }
+      plugins.map { |plugin| plugin.except!(:url) }
 
       render_json_dump(plugins)
     end
@@ -35,10 +35,10 @@ module ProcourseInstaller
 
       # Add to plugin store for in-app UI
       plugin_info = {
-        "name" => dir,
-        "installed_on" => Time.now(),
-        "installed_by" => current_user.username
-        "url" => plugin_url
+        :name => dir,
+        :installed_on => Time.now(),
+        :installed_by => current_user.username,
+        :url => plugin_url
       }
       ProcourseInstaller::InstalledPlugins.add(plugin_info)
 

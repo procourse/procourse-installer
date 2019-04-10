@@ -4,11 +4,15 @@
   {{#if plugins.length}}
     <thead>
       <th>Plugin</th>
+      <th>Installed On</th>
+      <th>Installed By</th>
     </thead>
     <tbody>
       {{#each plugins as |item|}}
         <tr class="admin-list-item">
-	  <td class="col">{{item}}</td>
+	  <td class="col">{{item.name}}</td>
+	  <td class="col">{{item.installed_on}}</td>
+	  <td class="col">{{item.installed_by}}</td>
 	</tr>
       {{/each}}
     </tbody>

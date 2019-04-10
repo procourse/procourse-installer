@@ -9,7 +9,7 @@ module ProcourseInstaller
     def self.add(plugin)
       plugins = get
 
-      plugins.push(plugin) unless plugins.select { |installed_plugin| installed_plugin['name'] == plugin['name'] }
+      plugins.push(plugin) unless plugins.select { |installed_plugin| installed_plugin[:name] == plugin[:name] }
 
       PluginStore.set('procourse_installer', @store_key, plugins)
     end
@@ -17,7 +17,7 @@ module ProcourseInstaller
     def self.remove(plugin)
       plugins = get
 
-      plugins.reject { |json| json['name'] == plugin['name'] }
+      plugins.reject { |hash| hash[:name] == plugin[:name] }
 
       PluginStore.set('procourse_installer', @store_key, plugins)
     end
