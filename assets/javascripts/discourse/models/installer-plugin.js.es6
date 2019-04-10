@@ -2,6 +2,7 @@ import { ajax } from 'discourse/lib/ajax';
 
 export default {
   findAll() {
+    return ajax(`/procourse-installer/installed`);
   },
 
   findById() {

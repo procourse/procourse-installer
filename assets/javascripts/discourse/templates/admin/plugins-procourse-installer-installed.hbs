@@ -1,0 +1,17 @@
+{{#conditional-loading-spinner condition=loading}}
+
+<table class="table grid">
+  {{#if plugins.length}}
+    <thead>
+      <th>Plugin</th>
+    </thead>
+    <tbody>
+      {{#each plugins as |item|}}
+        <tr class="admin-list-item">
+	  <td class="col">{{item}}</td>
+	</tr>
+      {{/each}}
+    </tbody>
+  {{/if}}
+</table>
+{{/conditional-loading-spinner}}

@@ -4,6 +4,7 @@ export default {
   map() {
     this.route("procourse-installer", function(){
       this.route('index', {path: '/'});
+      this.route('installed');
     })
   }
 };

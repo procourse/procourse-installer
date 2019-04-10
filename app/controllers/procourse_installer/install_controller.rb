@@ -1,5 +1,10 @@
 module ProcourseInstaller
   class InstallController < ApplicationController
+    def show
+      plugins = ProcourseInstaller::InstalledPlugins.get
+
+      render_json_dump(plugins)
+    end
 
     def install
       raise Discourse::NotFound unless params[:plugin_url].present?
@@ -26,6 +31,10 @@ module ProcourseInstaller
 
       Process.waitpid(pid)
 
+      # Add to plugin store for in-app UI
+      ProcourseInstaller::InstalledPlugins.add(plugin_url)
+
+      # Add to text file for on-bootstrap plugin install task
       `mkdir /shared/tmp/procourse-installer` unless Dir.exist?('/shared/tmp/procourse-installer')
       plugin_file = File.new('/shared/tmp/procourse-installer/plugins.txt', 'a')
       plugin_file.write("#{plugin_url}\n")

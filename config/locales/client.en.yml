@@ -5,3 +5,8 @@ en:
       plugin_url: "Enter the url for the repo of the plugin. Ex: https://github.com/procourse/procourse-memberships"
       install: "Install Plugin"
       installed: "Plugin successfully installed!"
+    admin:
+      procourse-installer:
+        titles:
+          install: "Install"
+          installed: "Installed Plugins"
