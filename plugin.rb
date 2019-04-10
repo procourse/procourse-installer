@@ -11,6 +11,7 @@ add_admin_route 'procourse_installer.title', 'procourse-installer'
 #Adding butler admin page
 Discourse::Application.routes.append do
   get '/admin/plugins/procourse-installer' => 'admin/plugins#index'
+  get '/admin/plugins/procourse-installer/installed' => 'admin/plugins#index'
 end
 
 load File.expand_path('../lib/procourse_installer/engine.rb', __FILE__)
