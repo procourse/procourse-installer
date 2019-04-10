@@ -9,7 +9,7 @@ module ProcourseInstaller
     def self.add(plugin)
       plugins = get
 
-      plugins.push(plugin) unless plugins.select { |installed_plugin| installed_plugin[:name] == plugin[:name] }
+      plugins.push(plugin)
 
       PluginStore.set('procourse_installer', @store_key, plugins)
     end
