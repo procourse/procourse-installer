@@ -14,6 +14,7 @@ Discourse::Application.routes.append do
 end
 
 load File.expand_path('../lib/procourse_installer/engine.rb', __FILE__)
+load File.expand_path('../lib/procourse_installer/installed_plugins.rb', __FILE__)
 
 after_initialize do
   require_dependency File.expand_path('../app/jobs/regular/procourse_installer_upgrade_plugin.rb', __FILE__)
