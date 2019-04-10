@@ -3,6 +3,8 @@ module ProcourseInstaller
     def show
       plugins = ProcourseInstaller::InstalledPlugins.get
 
+      plugins.map { |plugin| plugin.attributes.exclude('url') }
+
       render_json_dump(plugins)
     end
 
@@ -32,7 +34,13 @@ module ProcourseInstaller
       Process.waitpid(pid)
 
       # Add to plugin store for in-app UI
-      ProcourseInstaller::InstalledPlugins.add(plugin_url)
+      plugin_info = {
+        "name" => dir,
+        "installed_on" => Time.now(),
+        "installed_by" => current_user.username
+        "url" => plugin_url
+      }
+      ProcourseInstaller::InstalledPlugins.add(plugin_info)
 
       # Add to text file for on-bootstrap plugin install task
       `mkdir /shared/tmp/procourse-installer` unless Dir.exist?('/shared/tmp/procourse-installer')
