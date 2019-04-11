@@ -51,5 +51,10 @@ module ProcourseInstaller
       render plain: "OK"
     end
 
+    def uninstall
+      raise Discourse::NotFound unless params[:plugin_name].present?
+
+      return
+    end
   end
 end

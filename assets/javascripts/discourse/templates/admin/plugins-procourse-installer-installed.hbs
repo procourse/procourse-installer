@@ -6,6 +6,7 @@
       <th>Plugin</th>
       <th>Installed On</th>
       <th>Installed By</th>
+      <th></th>
     </thead>
     <tbody>
       {{#each plugins as |item|}}
@@ -13,6 +14,7 @@
 	  <td class="col">{{item.name}}</td>
 	  <td class="col">{{item.installed_on}}</td>
 	  <td class="col">{{item.installed_by}}</td>
+	  <td class="col">{{d-button class="btn btn-danger uninstall" icon="trash" action=(action "uninstall" item.name) disabled=uninstalling title="procourse_installer.uninstall" }}</td>
 	</tr>
       {{/each}}
     </tbody>

@@ -8,6 +8,15 @@ export default Ember.Controller.extend({
       this.set("plugins", result);
       this.set("loading", false);
     });
-  }.on('init')
+  }.on('init'),
+
+  actions: {
+    uninstall(pluginName) {
+      this.set("uninstalling", true);
+      InstallerPlugin.uninstall(pluginName).then(result => {
+        this.set("uninstalling", false);
+      });
+    }
+  }
 
 })

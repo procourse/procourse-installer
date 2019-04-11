@@ -14,5 +14,12 @@ export default {
       dataType: 'json',
       contentType: 'application/json'
     });
+  },
+  uninstall(plugin_name){
+    return ajax(`/procourse-installer/uninstall/${plugin_name}`, {
+      type: 'DELETE',
+      dataType: 'json',
+      contentType: 'application/json'
+    });
   }
 };
