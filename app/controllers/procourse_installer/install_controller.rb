@@ -92,6 +92,7 @@ module ProcourseInstaller
         ProcourseInstaller::InstalledPlugins.remove(plugin_to_remove)
       rescue 
         STDERR.puts("Whoops.")
+      end
     end
 
     private
