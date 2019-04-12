@@ -57,77 +57,18 @@ module ProcourseInstaller
       installed_plugins = ProcourseInstaller::InstalledPlugins.get
       plugin_to_remove = installed_plugins.select { |plugin| plugin[:name] == params[:plugin_name] } unless installed_plugins.nil?
 
-      # Uninstall plugin
-      launcher_pid = unicorn_launcher_pid
-      master_pid = unicorn_master_pid
-      workers = unicorn_workers(master_pid).size
+      uninstaller = ProcourseInstaller::Uninstaller.new(plugin_to_remove)
 
-      begin
-        reload_unicorn(launcher_pid)
-
-        num_workers_spun_down = workers - 1
-
-        if num_workers_spun_down.positive?
-          (num_workers_spun_down).times { Process.kill("TTOU", unicorn_master_pid) }
-        end
-
-        if ENV["UNICORN_SIDEKIQS"].to_i > 0
-          Process.kill("TSTP", unicorn_master_pid)
-          sleep 1
-          # older versions do not have support, so quickly send a cont so master process is not hung
-          Process.kill("CONT", unicorn_master_pid)
-        end
-
-        # DO STUFF HERE
-        `cd /var/www/discourse/plugins && rm -r #{params[:plugin_name]}`
-
-        reload_unicorn(launcher_pid)
-
-        # Remove from bootstrap file
-
-        bootstrap_file = File.readlines('/shared/tmp/procourse-installer/plugins.txt')
-        bootstrap_file.delete_if { |line| line == plugin_to_remove[:url] }
-
-        # Remove from PluginStore
-        ProcourseInstaller::InstalledPlugins.remove(plugin_to_remove)
-      rescue 
-        STDERR.puts("Whoops.")
-      end
-    end
-
-    private
-
-    def unicorn_launcher_pid
-      `ps aux  | grep unicorn_launcher | grep -v sudo | grep -v grep | awk '{ print $2 }'`.strip.to_i
-    end
-
-    def unicorn_master_pid
-      `ps aux | grep "unicorn master -E" | grep -v "grep" | awk '{print $2}'`.strip.to_i
-    end
-
-    def unicorn_workers(master_pid)
-      `ps -f --ppid #{master_pid} | grep worker | awk '{ print $2 }'`
-        .split("\n")
-        .map(&:to_i)
-    end
-
-    def reload_unicorn(launcher_pid)
-      original_master_pid = unicorn_master_pid
-      Process.kill("USR2", launcher_pid)
-
-      iterations = 0
-      while pid_exists?(original_master_pid) do
-        iterations += 1
-        break if iterations >= 60
-        sleep 1
+      pid = fork do
+        exit if fork
+        Process.setsid
+        exit if fork
+        uninstaller.uninstall
       end
 
-      iterations = 0
-      while `curl -s #{local_web_url}` != "ok" do
-        iterations += 1
-        break if iterations >= 60
-        sleep 1
-      end
+      Process.waitpid(pid)
+
+      render plain: "OK"
     end
   end
 end
