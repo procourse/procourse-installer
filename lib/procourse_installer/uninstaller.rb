@@ -27,7 +27,7 @@ class ProcourseInstaller::Uninstaller
       end
 
       # DO STUFF HERE
-      `cd /var/www/discourse/plugins && rm -r #{@plugin[:name]}`
+      `cd /var/www/discourse/plugins && rm -rf #{@plugin[:name]}`
 
       reload_unicorn(launcher_pid)
 
@@ -44,7 +44,7 @@ class ProcourseInstaller::Uninstaller
   end
 
   private
-  
+
   def pid_exists?(pid)
     Process.getpgid(pid)
   rescue Errno::ESRCH
