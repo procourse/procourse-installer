@@ -27,7 +27,7 @@ class ProcourseInstaller::Uninstaller
       end
 
       # DO STUFF HERE
-      `cd /var/www/discourse/plugins && rm -rf #{@plugin[:name]}`
+      run("cd /var/www/discourse/plugins && rm -rf #{@plugin[:name]}")
 
       reload_unicorn(launcher_pid)
 
@@ -42,7 +42,44 @@ class ProcourseInstaller::Uninstaller
       STDERR.puts("Whoops.")
     end
   end
+  def run(cmd)
+    log "$ #{cmd}"
+    msg = ""
 
+    allowed_env = %w{
+      PWD
+      HOME
+      SHELL
+      PATH
+      COMPRESS_BROTLI
+    }
+
+    clear_env = Hash[*ENV.map { |k, v| [k, nil] }
+      .reject { |k, v|
+        allowed_env.include?(k) ||
+        k =~ /^DISCOURSE_/
+      }
+      .flatten]
+
+    clear_env["RAILS_ENV"] = "production"
+    clear_env["TERM"] = 'dumb' # claim we have a terminal
+
+    retval = nil
+    Open3.popen2e(clear_env, "cd #{Rails.root} && #{cmd} 2>&1") do |_in, out, wait_thread|
+      out.each do |line|
+        line.rstrip! # the client adds newlines, so remove the one we're given
+        log(line)
+        msg << line << "\n"
+      end
+      retval = wait_thread.value
+    end
+
+    unless retval == 0
+      STDERR.puts("FAILED: '#{cmd}' exited with a return value of #{retval}")
+      STDERR.puts(msg)
+      raise RuntimeError
+    end
+  end
   private
 
   def pid_exists?(pid)
