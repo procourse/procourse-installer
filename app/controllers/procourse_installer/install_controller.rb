@@ -57,16 +57,29 @@ module ProcourseInstaller
       installed_plugins = ProcourseInstaller::InstalledPlugins.get
       plugin_to_remove = installed_plugins.select { |plugin| plugin[:name] == params[:plugin_name] } unless installed_plugins.nil?
 
-      uninstaller = ProcourseInstaller::Uninstaller.new(plugin_to_remove)
+      repo = DockerManager::GitRepo.new('/var/www/discourse/plugins/' + params[:plugin_name], params[:plugin_name])
+      repo.stop_upgrading
+      remover = DockerManager::Upgrader.new(current_user.id, repo, nil)
 
       pid = fork do
         exit if fork
         Process.setsid
         exit if fork
-        uninstaller.uninstall
+        remover.remove(plugin_to_remove[0])
       end
 
       Process.waitpid(pid)
+
+      # Remove from PluginStore
+      ProcourseInstaller::InstalledPlugins.remove(plugin_to_remove[0])
+
+      # Remove from bootstrap file
+      bootstrap_file = File.readlines('/shared/tmp/procourse-installer/plugins.txt')
+      bootstrap_file.delete_if { |line| line.include?(plugin_to_remove[0][:url]) }
+
+      File.open('/shared/tmp/procourse-installer/plugins.txt', 'w+') do |f|
+        f.puts(bootstrap_file)
+      end
 
       render plain: "OK"
     end

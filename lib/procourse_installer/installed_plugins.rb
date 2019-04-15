@@ -17,7 +17,7 @@ module ProcourseInstaller
     def self.remove(plugin)
       plugins = get
 
-      plugins.reject { |hash| hash[:name] == plugin[:name] }
+      plugins.reject! { |hash| hash[:name] == plugin[:name] }
 
       PluginStore.set('procourse_installer', @store_key, plugins)
     end

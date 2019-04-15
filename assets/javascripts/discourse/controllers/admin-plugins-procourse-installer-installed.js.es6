@@ -2,6 +2,41 @@ import InstallerPlugin from '../models/installer-plugin';
 
 export default Ember.Controller.extend({
   loading: false,
+  output: null,
+  percent: "0",
+  messageReceived(msg) {
+    switch (msg.type) {
+      case "log":
+        this.set("output", this.get("output") + msg.value + "\n");
+        break;
+      case "percent":
+        this.set("percent", msg.value);
+        break;
+      case "status":
+        this.set("status", msg.value);
+
+        if (msg.value === "complete") {
+          this.set("uninstalled", true);
+          this.set("uninstalling", false);
+        }
+
+        if (msg.value === "complete" || msg.value === "failed") {
+          this.stopBus();
+        }
+
+        break;
+    }
+  },
+
+  startBus() {
+    MessageBus.subscribe("/docker/upgrade", msg => {
+      this.messageReceived(msg);
+    });
+  },
+
+  stopBus() {
+    MessageBus.unsubscribe("/docker/upgrade");
+  },
   _init: function() {
     this.set("loading", true);
     InstallerPlugin.findAll().then(result => {
@@ -13,9 +48,10 @@ export default Ember.Controller.extend({
   actions: {
     uninstall(pluginName) {
       this.set("uninstalling", true);
-      InstallerPlugin.uninstall(pluginName).then(result => {
-        this.set("uninstalling", false);
-      });
+      this.set("output", "");
+      this.set("uninstalled", false);
+      this.startBus();
+      InstallerPlugin.uninstall(pluginName);
     }
   }
 

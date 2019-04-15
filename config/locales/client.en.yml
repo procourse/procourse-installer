@@ -6,6 +6,7 @@ en:
       install: "Install Plugin"
       installed: "Plugin successfully installed!"
       uninstall: "Uninstall"
+      uninstalled: "Plugin successfully uninstalled!"
     admin:
       procourse-installer:
         titles:

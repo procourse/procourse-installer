@@ -21,3 +21,11 @@
   {{/if}}
 </table>
 {{/conditional-loading-spinner}}
+{{#if uninstalling}}
+<h3>Uninstalling Plugin</h3>
+{{progress-bar percent=percent}}
+{{x-console output=output followOutput=true}}
+{{/if}}
+{{#if installed}}
+<span class='installed-plugin'>{{i18n 'procourse_installer.uninstalled'}}</span>
+{{/if}}
