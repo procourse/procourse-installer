@@ -12,3 +12,5 @@ en:
         titles:
           install: "Install"
           installed: "Installed Plugins"
+        remove:
+          modal: "Are you sure you want to remove <strong>%{plugin_name}</strong>?"

@@ -47,11 +47,20 @@ export default Ember.Controller.extend({
 
   actions: {
     uninstall(pluginName) {
-      this.set("uninstalling", true);
-      this.set("output", "");
-      this.set("uninstalled", false);
-      this.startBus();
-      InstallerPlugin.uninstall(pluginName);
+      bootbox.confirm(
+        I18n.t("admin.procourse-installer.remove.modal", { plugin_name: pluginName }),
+        I18n.t("no_value"),
+        I18n.t("yes_value"),
+        result => {
+          if (result) {
+            this.set("uninstalling", true);
+            this.set("output", "");
+            this.set("uninstalled", false);
+            this.startBus();
+            InstallerPlugin.uninstall(pluginName);
+          }
+        }
+      );
     }
   }
 
