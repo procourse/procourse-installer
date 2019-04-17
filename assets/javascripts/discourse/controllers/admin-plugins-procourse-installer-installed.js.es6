@@ -18,6 +18,11 @@ export default Ember.Controller.extend({
         if (msg.value === "complete") {
           this.set("uninstalled", true);
           this.set("uninstalling", false);
+          this.set("loading", true);
+          InstallerPlugin.findAll().then(result => {
+            this.set("plugins", result);
+            this.set("loading", false);
+          });
         }
 
         if (msg.value === "complete" || msg.value === "failed") {
