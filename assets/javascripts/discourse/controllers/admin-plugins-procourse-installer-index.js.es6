@@ -3,7 +3,7 @@ import InstallerPlugin from '../models/installer-plugin';
 export default Ember.Controller.extend({
   output: null,
   percent: "0",
-  _init() {
+  _init: function() {
     InstallerPlugin.getState().then((result) => {
       if (result) {
         this.set("installing", true);
