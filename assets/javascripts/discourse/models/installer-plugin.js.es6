@@ -9,7 +9,7 @@ export default {
   },
   getState() {
     return ajax(`/procourse-installer/install`);
-  }
+  },
   install(plugin_url){
     return ajax(`/procourse-installer/install`, {
       data: JSON.stringify({"plugin_url": plugin_url}),
