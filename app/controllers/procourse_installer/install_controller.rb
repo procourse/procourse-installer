@@ -1,5 +1,8 @@
 module ProcourseInstaller
   class InstallController < ApplicationController
+    def status
+      $redis.get("procourse_installer_state") || false
+    end
     def show
       plugins = ProcourseInstaller::InstalledPlugins.get
 
@@ -24,6 +27,8 @@ module ProcourseInstaller
       repo.stop_upgrading
       upgrader = DockerManager::Upgrader.new(current_user.id,repo,nil)
 
+      $redis.set("procourse_installer_state", true)
+
       pid = fork do
         exit if fork
         Process.setsid
@@ -47,6 +52,8 @@ module ProcourseInstaller
       plugin_file = File.new('/shared/tmp/procourse-installer/plugins.txt', 'a')
       plugin_file.write("#{plugin_url}\n")
       plugin_file.close
+
+      $redis.del("procourse_installer_state")
 
       render plain: "OK"
     end

@@ -3,6 +3,16 @@ import InstallerPlugin from '../models/installer-plugin';
 export default Ember.Controller.extend({
   output: null,
   percent: "0",
+  _init() {
+    InstallerPlugin.getState().then((result) => {
+      if (result) {
+        this.set("installing", true);
+        this.set("output", "");
+        this.set("installed", false);
+        this.startBus();
+      }
+    });
+  }.on("init"),
   messageReceived(msg) {
     switch (msg.type) {
       case "log":
