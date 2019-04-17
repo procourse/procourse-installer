@@ -4,7 +4,7 @@ export default Ember.Controller.extend({
   output: null,
   percent: "0",
   _init: function() {
-    InstallerPlugin.getState().then((result) => {
+    InstallerPlugin.getState().then(result => {
       if (result) {
         this.set("installing", true);
         this.set("output", "");
