@@ -1,15 +1,14 @@
-import { observes, on } from 'ember-addons/ember-computed-decorators';
-import computed from 'ember-addons/ember-computed-decorators';
+import { default as discourseComputed } from 'discourse-common/utils/decorators';
 
 export default Ember.Component.extend({
   classNameBindings: [":progress", ":progress-striped", "active"],
 
-  @computed("percent")
+  @discourseComputed("percent")
   active(percent) {
     return parseInt(percent, 10) !== 100;
   },
 
-  @computed("percent")
+  @discourseComputed("percent")
   progress(percent) {
     return parseInt(percent, 10);
   }
