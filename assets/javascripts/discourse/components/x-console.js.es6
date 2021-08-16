@@ -1,5 +1,3 @@
-import { observes, on } from 'ember-addons/ember-computed-decorators';
-
 export default Ember.Component.extend({
   classNameBindings: [":logs"],
 
